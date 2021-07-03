@@ -5,7 +5,7 @@ const orderedItemSchema = mongoose.Schema({
         type: Number,
         required: true,
     },
-    product: {
+    drug: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Product",
         required: true,

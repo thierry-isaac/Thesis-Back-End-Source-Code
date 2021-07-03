@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 
 const userSchema = mongoose.Schema({
+    onlyAdmin:{
+        type: Boolean,
+    default: false
+
+    },
 
     name:{
         type: String,
@@ -48,7 +53,8 @@ const userSchema = mongoose.Schema({
     zip:{
         type: String,
         default: ""
-    }
+    },
+
     
 })
 
@@ -59,4 +65,5 @@ userSchema.set('toJSON',{
     virtuals:true
 })
 
-exports.User = mongoose.model("User", userSchema)
+exports.User = mongoose.model("User", userSchema);
+exports.userSchema = userSchema;

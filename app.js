@@ -9,6 +9,7 @@ const authJwt = require("./helpers/jwt")
 const errorHandler = require("./helpers/error-handler")
 
 
+
 // const productSchema = mongoose.Schema({
 //     name: String,
 //     image: String,
@@ -37,11 +38,22 @@ const userRouter = require('./routers/users')
 const orderRouter = require('./routers/orders')
 const productRouter = require('./routers/products')
 const categoryRouter = require('./routers/categories')
+const requestRegistrationRouter  = require("./routers/requestRegistration")
+const licenceInfoRouter = require("./routers/licenceInfo")
 
 app.use(`${api}/users`, userRouter);
 app.use(`${api}/orders`, orderRouter);
 app.use(`${api}/products`, productRouter);
 app.use(`${api}/categories`, categoryRouter);
+app.use(`${api}/registrationRequest`, requestRegistrationRouter);
+app.use(`${api}/licenceInfo`, licenceInfoRouter);
+
+var localIpV4Address = require("local-ipv4-address");
+ 
+localIpV4Address().then(function(ipAddress){
+    console.log("My IP address is " + ipAddress);
+    // My IP address is 10.4.4.137
+});
 
 // app.get(`${api}/products`, async (req, res)=>{
 //     // const product = {
@@ -85,15 +97,16 @@ mongoose.connect(process.env.CONNECTION_STRING, {
 .catch((error)=>{
     console.log(error)
 })
-//Development
-// app.listen(3000, ()=>{
-//     console.log(api)
-//     console.log("Here is the server running")
-// })
-
- 
-//Production
-var server = app.listen(process.env.PORT || 3000, function(){
-    var port = server.address().port;
-    console.log("Express is working on port +"+port)
+// Development
+app.listen(3000, ()=>{
+    console.log(api)
+    console.log("Here is the server running")
 })
+
+
+//Production
+// var server = app.listen(process.env.PORT || 3000, function(){
+//     var port = server.address().port;
+//     console.log("Express is working on port +"+port);
+//     console.log("Database_URL", process.env.CONNECTION_STRING)
+// })

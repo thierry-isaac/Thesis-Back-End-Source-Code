@@ -6,6 +6,14 @@ const mongoose =  require("mongoose");
 const multer = require("multer")
 const router = express.Router();
 
+
+
+var localIpV4Address = require("local-ipv4-address");
+ 
+const ip = localIpV4Address().then(function(ipAddress){
+    return ipAddress;
+    // My IP address is 10.4.4.137
+});
 const FILE_TYPE_MAP = {
     "image/png": "png",
     
@@ -63,17 +71,19 @@ const user = await User.findById(req.body.userLocation)
 if(!category){
     return res.status(400).send("Invalid Category");
 } 
+// const userLocation = req.body.userLocation
 if(!user){
     return res.status(400).send("Invalid User");
 }
 const file = req.file;
 if(!file){
-    return res.status(400).send("Image field is required");
+    return res.status(500).send("Image field is required");
 } 
-
-
 const fileName = req.file.filename;
-const imagePath = `${req.protocol}://${req.get("host")}/public/productsImages/`
+// const imagePath = `${req.protocol}://${req.get("host")}/public/productsImages/`
+const imagePath = `${req.protocol}://192.168.43.238:3000/public/productsImages/`
+// const imagePath = `${req.protocol}://100.100.101.65:3000/public/productsImages/`
+
 
 let product = new Product({
     name: req.body.name,
@@ -85,6 +95,7 @@ let product = new Product({
     category: req.body.category,
     countInStock: req.body.countInStock,
     // dateCreated: req.body.dateCreated,
+    // userLocation: req.body.userLocation,
     userLocation: req.body.userLocation,
 })
 
@@ -163,12 +174,16 @@ router.put("/image-galery/:id", upload.array('images', 4), async(req, res)=>{
     if(!mongoose.isValidObjectId(req.params.id)){
         return res.status(400).send("Invalid Product Id");
     }
-    const imagePath = `${req.protocol}://${req.get("host")}/public/productsImages/`
+    // const imagePath = `${req.protocol}://${req.get("host")}/public/productsImages/`
+    // const imagePath = `${req.protocol}://${ip}/public/productsImages/`
+    const imagePath = `${req.protocol}://192.168.43.238:3000/public/productsImages/`
+    // const imagePath = `${req.protocol}://100.100.101.65:3000/public/productsImages/`
+    
+    
     let paths= [];
     const files = req.files;
     if(files){
         files.map(file=>{
-            
             paths.push(`${imagePath}${file.filename}`);
         })
     }

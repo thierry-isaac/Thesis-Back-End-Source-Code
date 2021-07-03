@@ -41,8 +41,7 @@ const productSchema = mongoose.Schema({
     userLocation: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-        required: true,
-
+        // required: true,
     },
     images:[{
         type: String,
@@ -54,5 +53,11 @@ productSchema.virtual("id").get(function(){
 productSchema.set('toJSON',{
     virtuals:true
 })
+
+// productSchema.method('toJSON', function(){
+//     const { __v, ...object } = this.toObject();
+//     const { _id:id, ...result } = object;
+//     return { ...result, id };
+// });
 
 exports.Product = mongoose.model('Product', productSchema);
